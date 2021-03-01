@@ -13,13 +13,33 @@ In the root dir of the project :
 ```shell script
 docker-compose --env-file ./config/env.dev --log-level debug up --build
 ```
-this command specify : 
+this command will specify : 
  - the config file in order to fill the parameters in docker compose and the script shell
  - log level to debug to increase verbosity of the logs
  - up, start the container
  - --build, to build the container in each time
 
 It will download from docker hub in local repository the docker image if it is missing. 
+version of the images : mongodb:3.6.22, mongo-express:0.54.0 
+
+```shell script
+$ docker images
+REPOSITORY                          TAG                 IMAGE ID       CREATED              SIZE
+trailerplan-db-mongodb_app_python   latest              78514a7c4618   About a minute ago   145MB
+mongo-express                       0.54.0              18a3def0b573   5 days ago           129MB
+mongo                               3.6.22              b38f112c708c   12 days ago          447MB
+python                              3.8.6-slim-buster   0f59d947500d   3 months ago         113MB
+```
+
+when the 3 containers are run, in the docker ps it show :
+```shell script
+$ docker ps
+CONTAINER ID   IMAGE                               COMMAND                  CREATED         STATUS         PORTS                      NAMES
+95a983729fe3   mongo-express:0.54.0                "tini -- /docker-ent…"   2 minutes ago   Up 2 minutes   0.0.0.0:8081->8081/tcp     mongo-express
+1e4c35f46369   mongo:3.6.22                        "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:27017->27017/tcp   mngodb
+bd890407e215   trailerplan-db-mongodb_app_python   "python /app_python/…"   2 minutes ago   Up 2 minutes   0.0.0.0:5000->5000/tcp     app-python
+```
+
 Running logs at startup
 ```shell script
 $ docker logs mongodb
@@ -93,12 +113,6 @@ TriggeredBy: ● docker.socket
 ```
 
 
-
-
-
-
-
-
 Inside the container :
 ```shell script
 $ docker exec -it 'CONTAINER ID' bash
@@ -112,50 +126,11 @@ Welcome to the MongoDB shell.
 
 
 
-
-
-
-
-
-
-
-
-docker pull mongo:4.4.3
-docker pull mongo-express:0.54.0 
-
-
-docker network create --driver bridge mongo-network
-docker run --name db-mongo -d mongo:4.2
-mongodb
-
-
-docker-compose --env-file ./config/.env.dev up -d
-docker-compose --env-file ./config/.env.dev up
-
-
-docker run -p 27017:27017 -v /var/lib/mongodb/data/db/:/data/db  --name db-mongodb mongo:3.4.22
-
-docker run -p 27017:27017
--v ./docker/mongodb/mongod.conf:/etc/mongod.conf \
--v ./docker/mongodb/initdb.d/:/docker-entrypoint-initdb.d/ \
--v /var/lib/mongodb/data/db/:/data/db \ 
--v /var/lib/mongodb/data/log/:/var/log/mongodb/ \
---hostname mongodb-server --name db-mongodb \  
---config /etc/mongod.conf --wiredTigerCacheSizeGB 1 \ 
-mongo:4.2.12-bionic
-
-
-docker run -p 27017:27017 -v `pwd`/docker/mongodb/mongod.conf:/etc/mongod.conf -v `pwd`/docker/mongodb/initdb.d/:/docker-entrypoint-initdb.d/ 
--v /var/lib/mongodb/data/db/:/data/db -v /var/lib/mongodb/data/log/:/var/log/mongodb/ 
---hostname mongodb-server --name db-mongodb --config /etc/mongod.conf --wiredTigerCacheSizeGB 1  mongo:4.2.12-bionic
-
-$ docker exec -it <container-name> bash
-
-
-
-
-https://www.docker.com/blog/containerized-python-development-part-1/
-https://linuxhint.com/setup_mongodb_server_docker/
-https://www.bmc.com/blogs/mongodb-docker-container
-https://runnable.com/docker/python/docker-compose-with-flask-apps
-https://www.cloudbees.com/blog/using-docker-compose-for-python-development/
+References
+-------------
+[flask](https://flask.palletsprojects.com/en/1.1.x/)
+[flask-api](https://github.com/flask-api/flask-api)
+[orjson](https://github.com/ijl/orjson)
+[swagger](https://swagger.io)
+[mongodb](https://docs.mongodb.com/v3.6/)
+[mongo-express](http://mongodb-tools.com/tool/mongo-express/)
