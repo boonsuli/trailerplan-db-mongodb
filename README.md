@@ -2,7 +2,8 @@ TRAILER PLAN DATABASE WITH MONGO
 ================================
 
 This is the database in mongodb for the project TRAILERPLAN in https://github.com/boonsuli/trailerpplan-user.
-It use docker compose to launch 3 containers docker with mongodb 3.6.22, the client mongo express 0.54.0 and an CRUD python app.
+It use docker compose to launch 3 containers docker with mongodb 3.6.22, the client mongo express 0.54.0 and
+an CRUD python app with flask.
 The mongodb initialized with data and it will be request with a swagger at http://localhost:5000.
 
 ![alt text](docs/images/swagger.png)
